@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: "students_db"
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: "web_api"
+      # You can use whatever password you like
+      MYSQL_PASSWORD: "web_api"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: "root"
+    expose:
+      # Opens port 3306 on the container
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql-compose-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - mysql-compose-network
+networks:
+  mysql-compose-network:
+    driver: bridge
